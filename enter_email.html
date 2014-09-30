@@ -1,0 +1,109 @@
+<html>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+<script>
+    angular.module("MyApp", [])
+        .controller("MyController", function($scope) {
+            var counter = 0;
+            $scope.show_form = true;
+            $scope.show_table = false; 
+
+            $scope.entries = [];
+
+            $scope.first_name = "Alpheus";
+            $scope.last_name = "Madsen";
+            $scope.email = "aoeu@snth.com";
+
+            $scope.submit = function () {
+                alert("We have pushed the submit button!" + $scope.entries.toString());
+                $scope.entries.push({
+                    "timestamp" : Date(Date.now()).toString(),
+                    "first_name" : $scope.first_name,
+                    "last_name" : $scope.last_name,
+                    "email" : $scope.email
+                });
+                counter++;
+
+                $scope.show_form = false;
+                $scope.show_table = true;
+            };
+
+            $scope.showForm = function () {
+                $scope.show_form = true;
+                $scope.show_table = false;
+            }
+        } );
+</script>
+ 
+<body ng-app="MyApp">
+
+    <h3>Enter Email!</h3>
+    <br>
+    <div ng-controller="MyController" >
+        <form name="myForm" ng-submit="submit()" ng-show="show_form">
+            First Name: <input type="text" name="first_name" ng-model="first_name" required />
+            <span class="error" ng-show="myForm.first_name.$error.required">
+                Required!
+            </span>
+            <br>
+
+            Family Name: <input type="text" name="last_name" ng-model="last_name" required />
+            <span class="error" ng-show="myForm.last_name.$error.required">
+                Required!
+            </span>
+            <br>
+
+            Email: <input type="email" name="email" ng-model="email" required />
+            <span class="error" ng-show="myForm.email.$error.required">
+                Required!
+            </span>
+            <span class="error" ng-show="myForm.email.$error.email">
+                This needs to be a valid email address!
+            </span>
+            <br>
+
+            <input type=submit id="submit" value="Submit" />
+            <br>
+            <br>
+
+            <div ng-bind="first_name"></div>
+            <div ng-bind="last_name"></div>
+            <div ng-bind="email"></div>
+            <br>
+        </form>
+        <div ng-show="show_table">
+            <table>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                </tr>
+                <tr ng-repeat="entry in entries">
+                    <td>{{entry.timestamp}}</td>
+                    <td>{{entry.first_name}}</td>
+                    <td>{{entry.last_name}}</td>
+                    <td>{{email}}</td>
+                </tr>
+            </table>
+            <br>
+            <br>
+
+            <input type="button" ng-click="showForm()" value="Show Entry Form"/>
+        </div>
+   </div><br>
+
+    <br>
+    <a href="display_emails.html">Display Emails...</a><br>
+    <br>
+    So far, so good!  Things to do for this page:
+    <ul>
+        <li>Add error checking.  (Done!)</li>
+        <li>Add a submit button.  Note that this submit button needs:
+            <ul>
+                <li>To be active only if the first three fields are valid...on second thought, I like the "suggestive" that Angular uses to provide reminders that things need to be provided...</li>
+                <li>To add the information from the buttons to local storage or cookies...ah, heck!  Let's just store it in a JavaScript array, and make this one big happy page!</li>
+            </ul>
+        </li>
+    </ul>
+</body>
+</html>
